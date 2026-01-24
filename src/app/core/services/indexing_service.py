@@ -4,7 +4,7 @@ from pathlib import Path
 
 from langchain_community.document_loaders import PyPDFLoader
 
-from app.core.retrieval import index_documents
+from src.app.core.retrieval.vector_store import index_documents
 
 
 def index_pdf_file(file_path: Path) -> int:
@@ -16,6 +16,5 @@ def index_pdf_file(file_path: Path) -> int:
     Returns:
         Number of document chunks indexed.
     """
-    loader = PyPDFLoader(str(file_path))
-    docs = loader.load()
-    return index_documents(docs)
+   
+    return index_documents(file_path)

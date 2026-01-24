@@ -11,7 +11,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from src.app.core import get_settings
+from src.app.core.config import get_settings
 
 @lru_cache(maxsize=1)
 def _get_vector_store() -> PineconeVectorStore:
@@ -43,7 +43,7 @@ def index_documents(file_path: Path) -> int:
     Returns:
         The number of documents indexed.
     """
-    loader = PyPDFLoader(str(file_path), mode="single")
+    loader = PyPDFLoader(str(file_path))
     docs = loader.load()
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
