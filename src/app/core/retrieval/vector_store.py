@@ -11,7 +11,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-
+from src.app.core import get_settings
 
 @lru_cache(maxsize=1)
 def _get_vector_store() -> PineconeVectorStore:
