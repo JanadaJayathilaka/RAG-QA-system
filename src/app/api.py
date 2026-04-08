@@ -26,13 +26,13 @@ async def index_pdf(file: UploadFile = File(...)):
         file_path.write_bytes(contents)
 
         #index the PDF file
-        # chunks_indexed  = index_pdf_file(file_path)
+        chunks_indexed  = index_pdf_file(file_path)
 
         
         return {
             "filename": file.filename,
-            # "chunks_indexed": chunks_indexed,
-            # "message": f"File '{file.filename}' indexed successfully with {chunks_indexed} chunks."
+            "chunks_indexed": chunks_indexed,
+            "message": f"File '{file.filename}' indexed successfully with {chunks_indexed} chunks."
         }
     
     except Exception as e:

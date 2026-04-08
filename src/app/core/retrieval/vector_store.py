@@ -31,24 +31,3 @@ def _get_vector_store() -> PineconeVectorStore:
         embedding=embeddings,
     )
 
-
-
-
-def index_documents(file_path: Path) -> int:
-    """Index a list of Document objects into the Pinecone vector store.
-
-    Args:
-        docs: Documents to embed and upsert into the vector index.
-
-    Returns:
-        The number of documents indexed.
-    """
-    loader = PyPDFLoader(str(file_path))
-    docs = loader.load()
-
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-    texts = text_splitter.split_documents(docs)
-
-    vector_store = _get_vector_store()
-    vector_store.add_documents(texts)
-    return len(texts)
