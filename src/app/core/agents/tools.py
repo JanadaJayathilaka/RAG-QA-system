@@ -3,6 +3,7 @@ from src.app.core.retrieval.vector_store import retrieve
 
 
 from ..retrieval.vector_store import retrieve
+from ..retrieval.serialization import serialize_chunks
 
 
 @tool(response_format="content_and_artifact")
@@ -23,6 +24,9 @@ def retrieve_tool(query: str):
 
     docs = retrieve(query, top_k=5)
 
-    context = searialize_chunks(docs)
+    context = serialize_chunks(docs)
+
+
+    return context, docs
 
 
