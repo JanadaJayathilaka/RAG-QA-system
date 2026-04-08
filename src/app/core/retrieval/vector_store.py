@@ -31,3 +31,18 @@ def _get_vector_store() -> PineconeVectorStore:
         embedding=embeddings,
     )
 
+def index_documents(file_path: Path) -> int:
+    """Load a PDF, split it into chunks, and index the chunks in Pinecone."""
+    # Load the PDF document
+    loader = PyPDFLoader(str(file_path))
+    documents = loader.load()
+
+    # Split the document into chunks
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+    chunks = text_splitter.split_documents(documents)
+
+    # Index the chunks in Pinecone
+    vector_store = _get_vector_store()
+    vector_store.add_documents(chunks)
+
+    return len(chunks)
