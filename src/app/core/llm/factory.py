@@ -2,7 +2,10 @@
 
 from langchain_openai import ChatOpenAI
 from ..config import get_settings
+from functools import lru_cache
 
+
+@lru_cache(maxsize=1) # Cache the chat model instance to avoid reinitialization on every call
 def create_chat_model(temperature: float = 0.0) -> ChatOpenAI:
     """Create a LangChain v1 ChatOpenAI instance.
 
