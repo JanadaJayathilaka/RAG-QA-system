@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from src.app.core.services.indexing_service import index_pdf_file
 
 app = FastAPI(
-    title="Class 12 Multi-Agent RAG Demo",
+    title="RAG Demo",
     description=(
         "Demo API for asking questions about a vector databases paper. "
         "The `/qa` endpoint currently returns placeholder responses and "
