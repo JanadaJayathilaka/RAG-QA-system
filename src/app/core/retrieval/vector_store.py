@@ -13,7 +13,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from src.app.core.config import get_settings
 
-@lru_cache(maxsize=1)
+@lru_cache(maxsize=1) # Cache the vector store instance to avoid reinitialization on every call
 def _get_vector_store() -> PineconeVectorStore:
     """Create a PineconeVectorStore instance configured from settings."""
     settings = get_settings()
@@ -22,7 +22,7 @@ def _get_vector_store() -> PineconeVectorStore:
     index = pc.Index(settings.pinecone_index_name)
 
     embeddings = OpenAIEmbeddings(
-        model=settings.openai_embedding_model_name,
+        model="text-embedding-3-small",
         api_key=settings.openai_api_key,
     )
 
