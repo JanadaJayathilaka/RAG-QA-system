@@ -11,3 +11,29 @@ app = FastAPI(
     version= "1.0.0"
 )
 
+@app.post("/index-pdf", status_code = status.HTTP_200_OK)
+async def index_pdf(file: UploadFile = File(...)):
+    if file.content_type != "application/pdf":
+        raise HTTPException(status_code=400, detail="Invalid file type. Only PDF files are allowed.")
+    
+    try:
+        # Save the uploaded file to a temporary location
+        upload_dir = Path("data/uploads")
+        upload_dir.mkdir(parents=True, exist_ok=True)
+
+        file_path = upload_dir /file.filename
+        contents = await file.read()
+        file_path.write_bytes(contents)
+
+        #index the PDF file
+        chunks_indexed  = index_pdf_file(file_path)
+
+        
+        return {
+            "filename": file.filename,
+            "chunks_indexed": chunks_indexed,
+            "message": f"File '{file.filename}' indexed successfully with {chunks_indexed} chunks."
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
