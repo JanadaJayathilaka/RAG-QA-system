@@ -16,9 +16,9 @@ from langchain.agents import create_agent
 
 
 
-# Define agents at module level for reuse
-retrieval_agent = create_agent(
-    model=create_chat_model(),
-    tools=[retrieval_tool],
-    system_prompt=RETRIEVAL_SYSTEM_PROMPT,
-)
+# # Define agents at module level for reuse
+# retrieval_agent = create_agent(
+#     model=create_chat_model(),
+#     tools=[retrieval_tool],
+#     system_prompt=RETRIEVAL_SYSTEM_PROMPT,
+# )

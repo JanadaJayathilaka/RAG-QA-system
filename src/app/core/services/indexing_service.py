@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from langchain_community.document_loaders import PyPDFLoader
+# from langchain_community.document_loaders import PyPDFLoader
 
 from src.app.core.retrieval.vector_store import index_documents
 
