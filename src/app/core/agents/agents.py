@@ -18,3 +18,17 @@ retrieval_agent = create_agent(
     tools=[],
 )
 
+summarization_agent = create_agent(
+    system_prompt=SUMMARIZATION_SYSTEM_PROMPT,
+    model=create_chat_model(),
+    tools=[],
+)
+
+
+verification_agent = create_agent(
+    system_prompt=VERIFICATION_SYSTEM_PROMPT,
+    model=create_chat_model(),
+    tools=[],
+)
+
+
