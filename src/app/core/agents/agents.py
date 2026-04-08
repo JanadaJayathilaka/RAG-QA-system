@@ -3,7 +3,8 @@
 This module defines three LangChain agents (Retrieval, Summarization,
 Verification) and thin node functions that LangGraph uses to invoke them.
 """
-
+from langchain.agents import create_agent
+from src.app.core.llm.factory import create_chat_model
 from typing import List
 from .prompts import (
     RETRIEVAL_SYSTEM_PROMPT,
@@ -11,14 +12,9 @@ from .prompts import (
     VERIFICATION_SYSTEM_PROMPT,
 )
 
-from langchain.agents import create_agent
+retrieval_agent = create_agent(
+    system_prompt=RETRIEVAL_SYSTEM_PROMPT,
+    model=create_chat_model(),
+    tools=[],
+)
 
-
-
-
-# # Define agents at module level for reuse
-# retrieval_agent = create_agent(
-#     model=create_chat_model(),
-#     tools=[retrieval_tool],
-#     system_prompt=RETRIEVAL_SYSTEM_PROMPT,
-# )
