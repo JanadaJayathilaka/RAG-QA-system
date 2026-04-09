@@ -8,6 +8,8 @@ from src.app.core.llm.factory import create_chat_model
 from typing import List
 from .tools import retrieve_tool
 from .state import QAState
+from langchain.messages import AIMessage, ToolMessage, HumanMessage
+
 from .prompts import (
     RETRIEVAL_SYSTEM_PROMPT,
     SUMMARIZATION_SYSTEM_PROMPT,
@@ -44,4 +46,15 @@ def retrieval_node(state: QAState) -> QAState:
     """
     question = state["question"]
 
-    
+    result = retrieval_agent.invoke({"messages": HumanMessage(content=question)})
+
+    messages =result.get("messages", [])
+    context = ""
+
+    for msg in reversed(messages):
+        if isinstance(msg, ToolMessage):
+            context = str(msg.content)
+            break
+    return {
+        "context": context,
+    }
