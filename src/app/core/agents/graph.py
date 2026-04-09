@@ -34,3 +34,4 @@ def create_qa_graph() -> Any:
 def get_qa_graph():
     """Get the compiled QA graph, cached for efficiency."""
     return create_qa_graph()
+
