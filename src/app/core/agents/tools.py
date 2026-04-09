@@ -13,7 +13,7 @@ def retrieve_tool(query: str):
     The chunks are formatted with page numbers and indices for easy reference.
 
     Args:
-        query (str): The search query to retrieve relevant information.
+        query (str): The search query to retrieve all the information that question has.
     
     Returns:
         Tuple of (serialized_content, artifacts) where:
@@ -22,7 +22,7 @@ def retrieve_tool(query: str):
         - artifact: List of Document objects with full metadata for reference
     """
 
-    docs = retrieve(query, top_k=5)
+    docs = retrieve(query, k=5)
 
     context = serialize_chunks(docs)
 
