@@ -16,6 +16,13 @@ from .prompts import (
     VERIFICATION_SYSTEM_PROMPT,
 )
 
+def _extract_last_ai_content(messages: List[AIMessage]) -> str:
+    """Helper function to extract the content of the last AIMessage from a list of messages."""
+    for msg in reversed(messages):
+        if isinstance(msg, AIMessage):
+            return str(msg.content)
+    return ""
+
 retrieval_agent = create_agent(
     system_prompt=RETRIEVAL_SYSTEM_PROMPT,
     model=create_chat_model(),
@@ -57,4 +64,28 @@ def retrieval_node(state: QAState) -> QAState:
             break
     return {
         "context": context,
+    }
+
+def summarization_node(state: QAState) -> QAState:
+    """Summarization agent node: generates a draft answer from the question and retrieved context.
+    This node:
+    - sends the question and retrieved context to the summarization agent
+    - The agent processes this information and generates a draft answer.
+    - The draft answer is stored in `state["draft_answer"]` for the next node to use.
+    """
+    question = state["question"]
+    context = state.get("context")
+
+    user_content = f"Question: {question}\n\nContext: {context}"
+
+    result = summarization_agent.invoke(
+        {"messages": [HumanMessage(content=user_content)]}
+    )
+
+    messages = result.get("messages", [])
+    
+
+    draft_answer = _extract_last_ai_content(messages)
+    return {
+        "draft_answer": draft_answer,
     }
