@@ -2,9 +2,9 @@
 from typing import Any
 from .state import QAState
 
-
+from functools import lru_cache
 from langgraph.graph import StateGraph
-
+from langgraph.graph import START,END
 def create_qa_graph() -> Any:
     """Create and compile the linear multi-agent QA graph.
 
@@ -23,3 +23,14 @@ def create_qa_graph() -> Any:
     builder.add_node("verification", verification_node)  # Placeholder
 
     
+    builder.add_edge(START, "retrieval")
+    builder.add_edge("retrieval", "summarization")
+    builder.add_edge("summarization", "verification")
+    builder.add_edge("verification", END)
+
+    return builder.compile()
+
+@lru_cache(maxsize=1)
+def get_qa_graph():
+    """Get the compiled QA graph, cached for efficiency."""
+    return create_qa_graph()
