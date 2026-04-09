@@ -89,3 +89,27 @@ def summarization_node(state: QAState) -> QAState:
     return {
         "draft_answer": draft_answer,
     }
+
+
+def verification_node(state: QAState) -> QAState:
+    """Verification Agent node: verifies and corrects the draft answer.
+
+    This node:
+    - Sends question + context + draft_answer to the Verification Agent.
+    - Agent checks for hallucinations and unsupported claims.
+    - Stores the final verified answer in `state["answer"]`.
+    """
+    question = state["question"]
+    context = state.get("context", "")
+    draft_answer = state.get("draft_answer", "")
+
+    user_content = f"Question: {question}\n\nContext: {context}\n\nDraft Answer: {draft_answer}"
+
+    result = verification_agent.invoke(
+        {"messages": [HumanMessage(content=user_content)]}
+    )
+    messages = result.get("messages", [])
+    final_answer = _extract_last_ai_content(messages)
+    return {
+        "answer": final_answer,
+    }
